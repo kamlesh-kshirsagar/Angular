@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>AngularJS Calculator</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+    <style>
+        .result {
+            font-weight: bold;
+            color: green;
+        }
+    </style>
+</head>
+<body ng-app="myApp" ng-init="num1=0; num2=0; result=0">
+    <div ng-controller="myCtrl">
+        <h3>Addition of Two Numbers</h3>
+        <p>
+            Number 1: <input type="number" ng-model="num1">
+        </p>
+        <p>
+            Number 2: <input type="number" ng-model="num2">
+        </p>
+
+        <button ng-click="add()" ng-disabled="!num1 || !num2">Add</button>
+
+        <p ng-show="result > 0">
+            The sum is: <span ng-bind="result" class="result"></span>
+        </p>
+    </div>
+
+    <script>
+        var app = angular.module('myApp', []);
+        app.controller('myCtrl', function($scope) {
+            $scope.add = function() {
+                // AngularJS automatically converts string inputs to numbers for arithmetic
+                // if they are bound to a number input type.
+                $scope.result = $scope.num1 + $scope.num2;
+            };
+        });
+    </script>
+</body>
+</html>

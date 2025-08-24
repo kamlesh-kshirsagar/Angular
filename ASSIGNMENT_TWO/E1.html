@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>AngularJS Login</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+    <style>
+        .ng-dirty.ng-invalid {
+            border-color: red;
+        }
+        .ng-dirty.ng-valid {
+            border-color: green;
+        }
+        .error-message {
+            color: red;
+            font-size: 0.8em;
+            display: block;
+        }
+        .welcome-message {
+            color: green;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body ng-app="myApp">
+    <div ng-controller="myCtrl">
+        <h2>Login</h2>
+
+        <div ng-show="isLoggedIn" class="welcome-message">
+            Welcome, {{ username }}!
+        </div>
+
+        <form name="loginForm" ng-hide="isLoggedIn" novalidate>
+            <p>
+                <label>Username:</label>
+                <input type="text" 
+                       name="username" 
+                       ng-model="username" 
+                       required>
+                <span ng-show="loginForm.username.$dirty && loginForm.username.$error.required" 
+                      class="error-message">
+                    Username is required.
+                </span>
+            </p>
+
+            <p>
+                <label>Password:</label>
+                <input type="password" 
+                       name="password" 
+                       ng-model="password" 
+                       ng-minlength="6" 
+                       required>
+                <span ng-show="loginForm.password.$dirty && loginForm.password.$error.required" 
+                      class="error-message">
+                    Password is required.
+                </span>
+                <span ng-show="loginForm.password.$dirty && loginForm.password.$error.minlength" 
+                      class="error-message">
+                    Password must be at least 6 characters.
+                </span>
+            </p>
+
+            <button type="submit" 
+                    ng-click="login()" 
+                    ng-disabled="loginForm.$invalid">
+                Login
+            </button>
+
+            <p ng-show="loginFailed" class="error-message">
+                Invalid username or password.
+            </p>
+        </form>
+    </div>
+
+    <script>
+        var app = angular.module('myApp', []);
+        app.controller('myCtrl', function($scope) {
+            $scope.isLoggedIn = false;
+            $scope.loginFailed = false;
+            $scope.username = '';
+
+            // A simple "mock" for a valid login
+            const VALID_USERNAME = "user";
+            const VALID_PASSWORD = "password123";
+
+            $scope.login = function() {
+                // Check if the form is valid before processing
+                if ($scope.loginForm.$valid) {
+                    if ($scope.username === VALID_USERNAME && $scope.password === VALID_PASSWORD) {
+                        $scope.isLoggedIn = true;
+                        $scope.loginFailed = false;
+                    } else {
+                        $scope.isLoggedIn = false;
+                        $scope.loginFailed = true;
+                    }
+                }
+            };
+        });
+    </script>
+</body>
+</html>
